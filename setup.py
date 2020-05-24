@@ -21,7 +21,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=['events_countdown'],
+    packages=['events_countdown', 'utils'],
     entry_points={
         'console_scripts': 'events-countdown=events_countdown.main:main'
     },
