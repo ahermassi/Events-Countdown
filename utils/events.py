@@ -1,3 +1,4 @@
+import sys
 import uuid
 from datetime import date, datetime
 import yaml
@@ -27,3 +28,36 @@ def add_event(config_path, events):
     with open(config_path, 'w') as config:
         yaml.dump(events, config)
     print(Fore.GREEN + Style.BRIGHT + '{} added successfully!'.format(event_name) + Style.RESET_ALL)
+
+
+def delete_events_interactive(config_path, events):
+    if not events:
+        print(Fore.RED + Style.BRIGHT + 'You have no events!' + Style.RESET_ALL)
+        sys.exit()
+
+    updated_events, events_to_delete = {}, []
+    for id, event in events.items():
+        delete = input(Fore.RED + 'Remove {} ? [y/N] '.format(event['name'])).strip().lower()
+        if delete == 'y':
+            events_to_delete.append(event['name'])
+        else:
+            updated_events[id] = event
+
+    if not events_to_delete:
+        print(Fore.GREEN + Style.BRIGHT + 'No events deleted.')
+    else:
+        print('\nThese are the events you want to delete:')
+        for event in events_to_delete:
+            print(Fore.BLUE + Style.BRIGHT + event + Style.RESET_ALL)
+        print()
+        prompt = 'Remove {} event'.format(len(events_to_delete)) + ['s?', '?'][len(events_to_delete) == 1] + ' [y/N] '
+        confirm_deletion = input(Fore.RED + prompt).strip().lower()
+        if confirm_deletion == 'y':
+            with open(config_path, 'w') as config:
+                yaml.dump(updated_events, config)
+            print(Fore.GREEN + Style.BRIGHT + 'Successfully deleted.' + Style.RESET_ALL)
+        else:
+            print(Fore.GREEN + Style.BRIGHT + 'Aborted.' + Style.RESET_ALL)
+
+
+
