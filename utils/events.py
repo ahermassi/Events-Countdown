@@ -3,6 +3,7 @@ import uuid
 from datetime import date, datetime
 import yaml
 from colorama import Fore, Style
+from progress.bar import Bar
 
 
 def get_user_input(prompt):
@@ -98,4 +99,32 @@ def delete_expired(config_path, events):
         bulk_delete(config_path, events_to_delete, updated_events)
 
 
+def display(event):
+    stars = '*' * (len(event['name']) + 4)
+    print(Fore.BLUE + Style.BRIGHT + stars)
+    print('*', event['name'], '*')
+    print(stars + '\n' + Style.RESET_ALL)
 
+    start_date = datetime.strptime(event['start_date'], '%Y-%m-%d').date()
+    end_date = datetime.strptime(event['end_date'], '%Y-%m-%d').date()
+    today = date.today()
+
+    total_event_days = (end_date - start_date).days
+    days_passed = (today - start_date).days
+    days_remaining = total_event_days - days_passed
+
+    if total_event_days < 0:
+        print(Fore.RED + Style.BRIGHT + 'Start date can\'t be after end date.')
+        return
+
+    print(f"Current Date:    {today.strftime('%b %d, %Y')}")
+    print(f"Start Date:      {start_date.strftime('%b %d, %Y')}")
+    print(f"End Date:        {end_date.strftime('%b %d, %Y')}\n")
+    print(f"Days Passed:     {days_passed}")
+    if days_remaining <= 0:
+        print(Fore.RED + 'No days remaining\n')
+    else:
+        print(Fore.CYAN + f"Days Remaining:  {days_remaining}\n")
+
+    percentage_complete = round((days_passed / total_event_days) * 100, 1)
+    print(Fore.GREEN + Style.BRIGHT + '{}% complete\n'.format(min(100, percentage_complete)) + Style.RESET_ALL)
