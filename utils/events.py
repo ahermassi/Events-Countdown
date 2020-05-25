@@ -3,7 +3,6 @@ import uuid
 from datetime import date, datetime
 import yaml
 from colorama import Fore, Style
-from progress.bar import Bar
 
 
 def get_user_input(prompt):

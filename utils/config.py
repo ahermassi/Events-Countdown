@@ -5,7 +5,6 @@ from colorama import Fore, Style
 
 
 def get_config_path():
-    xdg_config = None
     if environ.get('XDG_CONFIG_HOME'):
         xdg_config = environ.get('XDG_CONFIG_HOME')
     else:
@@ -20,7 +19,6 @@ def create_config(config_path):
 
 
 def get_events(config_path):
-    events = {}
     with open(config_path, 'r') as config:
         try:
             events = yaml.safe_load(config)

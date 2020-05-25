@@ -7,7 +7,7 @@ from utils.events import add_event, delete_events_interactive, delete_events, de
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('--add', '-a', is_flag=True, help='Create events')
 @click.option('--delete-interactive', '-di', is_flag=True, help='Delete previously created events interactively')
-@click.option('--delete', '-d', multiple=True, help='Delete multiple events at once.')
+@click.option('--delete', '-d', multiple=True, help='Delete multiple events at once')
 @click.option('--clean', '-c', is_flag=True, help='Delete expired events')
 @click.option('--config', is_flag=True, help='Print config file path')
 def main(add, delete_interactive, delete, clean, config):
