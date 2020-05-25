@@ -2,7 +2,7 @@ import click
 
 from utils.config import get_config_path, create_config, get_events
 from colorama import Fore, Style
-from utils.events import add_event, delete_events_interactive, delete_events
+from utils.events import add_event, delete_events_interactive, delete_events, delete_expired
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
@@ -25,6 +25,8 @@ def main(add, delete_interactive, delete, clean, config):
         delete_events_interactive(config_path, events)
     elif config:
         print(Fore.BLUE + Style.BRIGHT + 'Config file path: {}'.format(config_path) + Style.RESET_ALL)
+    elif clean:
+        delete_expired(config_path, events)
     elif not events:
         print(Fore.RED + Style.BRIGHT + 'You have no events!' + Style.RESET_ALL)
 

@@ -78,4 +78,24 @@ def bulk_delete(config_path, events_to_delete, updated_events):
         print(Fore.GREEN + Style.BRIGHT + 'Aborted.' + Style.RESET_ALL)
 
 
+def delete_expired(config_path, events):
+    if not events:
+        print(Fore.RED + Style.BRIGHT + 'You have no events!' + Style.RESET_ALL)
+        sys.exit()
+
+    updated_events, events_to_delete = {}, []
+    for id, event in events.items():
+        end_date = datetime.strptime(event['end_date'], "%Y-%m-%d")
+        diff = (date.today() - end_date.date()).days
+        if diff >= 0:
+            events_to_delete.append(event['name'])
+        else:
+            updated_events[id] = event
+
+    if not events_to_delete:
+        print(Fore.GREEN + Style.BRIGHT + "You have no expired events.")
+    else:
+        bulk_delete(config_path, events_to_delete, updated_events)
+
+
 
